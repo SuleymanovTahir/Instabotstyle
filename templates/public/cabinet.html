@@ -1,0 +1,115 @@
+{% extends "public/PublicLayout.html" %}
+{% block content %}
+<div class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 bg-pink-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-8 h-8 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                </div>
+                <h1 class="text-4xl text-gray-900">Личный кабинет</h1>
+            </div>
+
+            <div class="space-y-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl">
+                        А
+                    </div>
+                    <div>
+                        <h2 class="text-2xl text-gray-900">Анна Иванова</h2>
+                        <p class="text-gray-600">anna@example.com</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <button class="px-6 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 2h12v2H6zm0 4h12v2H6zm0 4h12v2H6zm0 4h12v2H6z" />
+                        </svg>
+                        Мои записи
+                    </button>
+                    <button class="px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg hover:shadow-lg transition-shadow flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v2h2V7zm0 4h-2v6h2v-6z" />
+                        </svg>
+                        Новая запись
+                    </button>
+                    <button class="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-shadow flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8-1.41-1.42z" />
+                        </svg>
+                        Профиль
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="p-6 bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl">
+                        <h3 class="text-xl text-gray-900 mb-4">Мои записи</h3>
+                        <div class="space-y-4">
+                            {% for booking in bookings %}
+                            <div class="flex items-center justify-between pb-4 border-b border-pink-100 last:border-0">
+                                <div>
+                                    <p class="text-gray-900">{{ booking.service }}</p>
+                                    <p class="text-gray-600 text-sm">{{ booking.date }} в {{ booking.time }}</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-sm
+                                    {% if booking.status == 'confirmed' %}bg-green-100 text-green-800
+                                    {% elif booking.status == 'completed' %}bg-blue-100 text-blue-800
+                                    {% endif %}">
+                                    {{ booking.status | capitalize }}
+                                </span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl">
+                        <h3 class="text-xl text-gray-900 mb-4">Новая запись</h3>
+                        <div class="space-y-4">
+                            {% for slot in availableSlots %}
+                            <div>
+                                <p class="text-gray-900 mb-2">{{ slot.date }}</p>
+                                <div class="flex flex-wrap gap-2">
+                                    {% for time in slot.times %}
+                                    <button class="px-4 py-2 border border-purple-300 rounded-lg hover:bg-purple-50">{{ time }}</button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl">
+                        <h3 class="text-xl text-gray-900 mb-4">Редактировать профиль</h3>
+                        <form id="profile-form" class="space-y-6">
+                            <div>
+                                <label class="block text-sm text-gray-500 mb-2" for="profile-name">Имя</label>
+                                <input type="text" id="profile-name" value="{{ profile.name }}" class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-500 mb-2" for="profile-email">Email</label>
+                                <input type="email" id="profile-email" value="{{ profile.email }}" class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-500 mb-2" for="profile-phone">Телефон</label>
+                                <input type="tel" id="profile-phone" value="{{ profile.phone }}" class="w-full px-4 py-2 border rounded-lg">
+                            </div>
+                            <button type="submit" class="w-full px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:shadow-lg transition-shadow">Сохранить изменения</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/button.js"></script>
+<script src="/static/js/input.js"></script>
+<script src="/static/js/label.js"></script>
+<script src="/static/js/tabs.js"></script>
+<script src="/static/js/badge.js"></script>
+<script src="/static/js/cabinet.js"></script>
+{% endblock %}

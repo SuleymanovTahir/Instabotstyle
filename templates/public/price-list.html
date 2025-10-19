@@ -1,0 +1,60 @@
+√{% extends "public/PublicLayout.html" %}
+{% block content %}
+<div>
+    <!-- Header -->
+    <section class="bg-gradient-to-br from-pink-100 via-purple-100 to-pink-50 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl text-gray-900 mb-4">Прайс-лист</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Актуальные цены на наши услуги. Мы предлагаем премиальное качество по доступным ценам.
+            </p>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="space-y-20">
+                {% for category in services %}
+                <div>
+                    <div class="flex items-center gap-4 mb-12">
+                        <div class="w-16 h-16 bg-gradient-to-r {{ category.color }} rounded-xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="{{ category.iconPath }}" />
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl text-gray-900">{{ category.title }}</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {% for service in category.services %}
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-xl text-gray-900">{{ service.name }}</h3>
+                                <p class="text-2xl text-pink-600 ml-4">{{ service.price }} AED</p>
+                            </div>
+                            <p class="text-gray-600">{{ service.description }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="bg-gradient-to-br from-pink-50 to-purple-50 py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl text-gray-900 mb-4">Готовы записаться?</h2>
+            <p class="text-lg text-gray-600 mb-8">
+                Выберите удобное время и насладитесь нашими премиальными услугами
+            </p>
+            <a href="/" class="inline-flex px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full hover:shadow-lg transition-shadow text-lg">Записаться сейчас</a>
+        </div>
+    </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/button.js"></script>
+{% endblock %}

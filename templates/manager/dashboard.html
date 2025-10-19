@@ -1,0 +1,182 @@
+{% extends "layouts/ManagerLayout.html" %}
+{% block content %}
+<div class="p-8">
+    <div class="mb-8">
+        <h1 class="text-3xl text-gray-900 mb-2">Панель менеджера</h1>
+        <p class="text-gray-600">Управление клиентами и сообщениями</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <a href="/manager/messages" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 3h18v18H3z" />
+                </svg>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl text-gray-900 mb-1">42</h3>
+                    <p class="text-gray-600 text-sm">Новых сообщений</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">+12</span>
+            </div>
+        </a>
+
+        <a href="/manager/clients" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                </svg>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl text-gray-900 mb-1">128</h3>
+                    <p class="text-gray-600 text-sm">Активных клиентов</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">+8</span>
+            </div>
+        </a>
+
+        <a href="/manager/funnel" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 4h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h16v2H4z" />
+                </svg>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl text-gray-900 mb-1">+18%</h3>
+                    <p class="text-gray-600 text-sm">Рост конверсии</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">Хорошо</span>
+            </div>
+        </a>
+
+        <a href="/manager/analytics" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3M6 18h12" />
+                </svg>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl text-gray-900 mb-1">94%</h3>
+                    <p class="text-gray-600 text-sm">Удовлетворенность</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs bg-pink-100 text-pink-800">Отлично</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl text-gray-900 mb-4">Быстрые действия</h2>
+            <div class="space-y-3">
+                <a href="/manager/chat" class="block w-full py-3 px-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow flex items-center justify-between">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                        </svg>
+                        Открыть чат
+                    </span>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
+                    </svg>
+                </a>
+                <a href="/manager/messages" class="block w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:shadow-lg transition-shadow flex items-center justify-between">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 3h18v18H3z" />
+                        </svg>
+                        Просмотреть сообщения
+                    </span>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
+                    </svg>
+                </a>
+                <a href="/manager/clients" class="block w-full py-3 px-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:shadow-lg transition-shadow flex items-center justify-between">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                        База клиентов
+                    </span>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl text-gray-900 mb-4">Последняя активность</h2>
+            <div class="space-y-4">
+                <div class="flex items-start gap-3 pb-3 border-b border-gray-100">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 3h18v18H3z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm text-gray-900">Новое сообщение от Анны Ивановой</p>
+                        <p class="text-xs text-gray-500 mt-1">5 минут назад</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 pb-3 border-b border-gray-100">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm text-gray-900">Добавлен новый клиент</p>
+                        <p class="text-xs text-gray-500 mt-1">20 минут назад</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 pb-3 border-b border-gray-100">
+                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M4 4h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h16v2H4z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm text-gray-900">Конверсия увеличилась на 5%</p>
+                        <p class="text-xs text-gray-500 mt-1">1 час назад</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm text-gray-900">15 активных диалогов в чате</p>
+                        <p class="text-xs text-gray-500 mt-1">2 часа назад</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl shadow-sm p-6 text-white">
+        <h2 class="text-xl mb-2">💡 Совет дня</h2>
+        <p class="text-pink-50">
+            Используйте воронку продаж для анализа конверсии на каждом этапе. Это поможет выявить узкие места и улучшить результаты.
+        </p>
+        <a href="/manager/funnel" class="inline-flex mt-4 px-6 py-2 border border-white text-white rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors">Перейти к воронке</a>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/card.js"></script>
+<script src="/static/js/badge.js"></script>
+<script src="/static/js/button.js"></script>
+{% endblock %}

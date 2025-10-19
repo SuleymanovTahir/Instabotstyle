@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty Salon CRM - Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/globals.css">
+</head>
+<body class="bg-gray-50 h-screen flex">
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+        <div class="p-6 border-b border-gray-200">
+            <h1 class="text-2xl text-pink-600">Beauty Salon CRM</h1>
+            <p class="text-sm text-gray-500 mt-1">Менеджер</p>
+        </div>
+        <nav class="flex-1 overflow-y-auto p-4">
+            <ul class="space-y-1">
+                {% for item in [
+                    {'label': 'Панель управления', 'path': '/manager/dashboard', 'icon': 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3M6 18h12'},
+                    {'label': 'Сообщения', 'path': '/manager/messages', 'icon': 'M3 3h18v18H3z'},
+                    {'label': 'Чат', 'path': '/manager/chat', 'icon': 'M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z'},
+                    {'label': 'Клиенты', 'path': '/manager/clients', 'icon': 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'},
+                    {'label': 'Аналитика', 'path': '/manager/analytics', 'icon': 'M4 4h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm0 4h16v2H4z'},
+                    {'label': 'Воронка продаж', 'path': '/manager/funnel', 'icon': 'M10 2h4v4h-4zm0 6h4v4h-4zm0 6h4v4h-4z'},
+                    {'label': 'Настройки', 'path': '/manager/settings', 'icon': 'M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.06-.94l2.03-1.58a.5.5 0 00.06-.69l-2-3.46a.5.5 0 00-.61-.22l-2.39.96c-.5-.38-1.03-.7-1.59-.96l-.36-2.54a.5.5 0 00-.5-.44h-4a.5.5 0 00-.5.44l-.36 2.54c-.56.26-1.09.58-1.59.96l-2.39-.96a.5.5 0 00-.61.22l-2 3.46a.5.5 0 00.06.69l2.03 1.58c-.04.3-.06.61-.06.94s.02.64.06.94l-2.03 1.58a.5.5 0 00-.06.69l2 3.46a.5.5 0 00.61.22l2.39-.96c.5.38 1.03.7 1.59.96l.36 2.54a.5.5 0 00.5.44h4a.5.5 0 00.5-.44l.36-2.54c.56-.26 1.09-.58 1.59-.96l2.39.96a.5.5 0 00.61-.22l2-3.46a.5.5 0 00-.06-.69l-2.03-1.58z'}
+                ] %}
+                <li>
+                    <a href="{{ item.path }}"
+                       class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors {% if request.url.path == item.path %}bg-pink-50 text-pink-600{% else %}text-gray-700 hover:bg-gray-50{% endif %}">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="{{ item.icon }}" />
+                        </svg>
+                        <span>{{ item.label }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center text-white">
+                    {{ user.name[0] if user else 'M' }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm truncate">{{ user.name if user else 'Менеджер' }}</p>
+                    <p class="text-xs text-gray-500">{{ user.role if user else 'manager' }}</p>
+                </div>
+            </div>
+            <a href="/logout"
+               class="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16 17v-2H9v-2h7v-2l3 3-3 3zm-4 3H5V4h7v2H7v12h5v2z" />
+                </svg>
+                <span>Выйти</span>
+            </a>
+        </div>
+    </aside>
+    <main class="flex-1 overflow-y-auto">
+        {% block content %}
+        {% endblock %}
+    </main>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

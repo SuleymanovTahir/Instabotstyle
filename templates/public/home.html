@@ -1,0 +1,194 @@
+{% extends "public/PublicLayout.html" %}
+{% block content %}
+<div>
+    <!-- Hero -->
+    <section class="relative bg-gradient-to-br from-pink-500 to-purple-600 text-white py-32 overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-6xl font-bold mb-6">Добро пожаловать в Luxury Beauty Salon</h1>
+            <p class="text-2xl mb-8 max-w-3xl mx-auto">
+                Премиальные услуги красоты для тех, кто ценит совершенство
+            </p>
+            <a href="/price-list" class="inline-flex px-8 py-4 bg-white text-pink-600 rounded-full hover:shadow-xl transition-shadow text-lg font-semibold">Записаться на процедуру</a>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl text-gray-900 mb-12 text-center">Наши услуги</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {% for service in data.services %}
+                <div class="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-8 text-center">
+                    <div class="w-20 h-20 bg-white rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg">
+                        <svg class="w-10 h-10 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l-5.5 9h11z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl text-gray-900 mb-4">{{ service.nameRu }}</h3>
+                    <p class="text-gray-600 mb-6">{{ service.descriptionRu }}</p>
+                    <p class="text-xl text-pink-600 mb-6">{{ service.price }} AED</p>
+                    <a href="/price-list" class="inline-flex px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full hover:shadow-lg transition-shadow">Подробнее</a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-12">
+                <a href="/price-list" class="inline-flex px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full hover:shadow-lg transition-shadow text-lg">Смотреть полный прайс-лист</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us -->
+    <section class="py-20 bg-gradient-to-br from-pink-50 to-purple-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl text-gray-900 mb-12 text-center">Почему выбирают нас</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl text-gray-900 mb-4">Профессиональные мастера</h3>
+                    <p class="text-gray-600">Сертифицированные специалисты с многолетним опытом</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl text-gray-900 mb-4">Премиальные материалы</h3>
+                    <p class="text-gray-600">Только проверенная и безопасная косметика</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl text-gray-900 mb-4">Индивидуальный подход</h3>
+                    <p class="text-gray-600">Персональные рекомендации для каждого клиента</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl text-gray-900 mb-4">Гарантия качества</h3>
+                    <p class="text-gray-600">Гарантия на все процедуры</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl text-gray-900 mb-12 text-center">Отзывы наших клиентов</h2>
+            <div class="relative">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {% for testimonial in testimonials %}
+                    <div class="bg-gradient-to-br from-pink-50 to-purple-50 p-8 rounded-2xl">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-pink-600 rounded-full flex items-center justify-center text-white text-xl">
+                                {{ testimonial.avatar }}
+                            </div>
+                            <div>
+                                <h3 class="text-lg text-gray-900">{{ testimonial.name }}</h3>
+                                <div class="flex gap-1">
+                                    {% for i in range(testimonial.rating) %}
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                    </svg>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">"{{ testimonial.text }}"</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow">
+                    <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
+                    </svg>
+                </button>
+                <button class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow">
+                    <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 bg-gradient-to-br from-pink-500 to-purple-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl mb-6">Готовы к преображению?</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">
+                Запишитесь на процедуру и ощутите нашу заботу о вашей красоте
+            </p>
+            <a href="/price-list" class="inline-flex px-8 py-4 bg-white text-pink-600 rounded-full hover:shadow-xl transition-shadow text-lg font-semibold">Записаться</a>
+        </div>
+    </section>
+
+    <!-- Quick Booking -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl text-gray-900 mb-12 text-center">Быстрая запись</h2>
+            <div class="bg-gradient-to-br from-pink-50 to-purple-50 p-8 rounded-2xl max-w-2xl mx-auto">
+                <form id="quick-booking-form" class="space-y-6">
+                    <div>
+                        <label class="block text-sm text-gray-500 mb-2" for="name">Имя *</label>
+                        <input type="text" id="name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600" placeholder="Анна Иванова">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-500 mb-2" for="phone">Телефон *</label>
+                        <input type="tel" id="phone" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600" placeholder="+971 50 123 4567">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-500 mb-2" for="service">Услуга *</label>
+                        <select id="service" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+                            <option value="">Выберите услугу</option>
+                            {% for service in services %}
+                            <option value="{{ service }}">{{ service }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm text-gray-500 mb-2" for="date">Дата *</label>
+                            <input type="date" id="date" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm text-gray-500 mb-2" for="time">Время *</label>
+                            <input type="time" id="time" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow text-lg">
+                        <svg class="w-5 h-5 mr-2 inline" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 2h12v2H6zm0 4h12v2H6zm0 4h12v2H6zm0 4h12v2H6z" />
+                        </svg>
+                        Записаться
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/button.js"></script>
+<script src="/static/js/input.js"></script>
+<script src="/static/js/label.js"></script>
+<script src="/static/js/select.js"></script>
+<script src="/static/js/home.js"></script>
+{% endblock %}

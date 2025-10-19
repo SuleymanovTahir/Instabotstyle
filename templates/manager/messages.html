@@ -1,0 +1,219 @@
+{% extends "layouts/ManagerLayout.html" %}
+
+{% block content %}
+  <div class="p-8">
+    <!-- Заголовок -->
+    <div class="mb-8">
+      <h1 class="text-3xl text-gray-900 mb-2 flex items-center gap-3">
+        <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+        </svg>
+        Сообщения
+        {% if unread_count > 0 %}
+          <span class="bg-pink-600 text-white text-sm px-2 py-1 rounded-full">{{ unread_count }}</span>
+        {% endif %}
+      </h1>
+      <p class="text-gray-600">Входящие сообщения от клиентов для {{ user.name }} ({{ user.role | capitalize }})</p>
+    </div>
+
+    <!-- Статистика -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm mb-1">Всего сообщений</p>
+            <h3 class="text-3xl text-gray-900">{{ messages|length }}</h3>
+          </div>
+          <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          </svg>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm mb-1">Непрочитанные</p>
+            <h3 class="text-3xl text-blue-600">{{ unread_count }}</h3>
+          </div>
+          <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm mb-1">Избранные</p>
+            <h3 class="text-3xl text-yellow-600">{{ starred_count }}</h3>
+          </div>
+          <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.95-.69l1.519-4.674z" />
+          </svg>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm mb-1">В работе</p>
+            <h3 class="text-3xl text-green-600">{{ messages | selectattr("status", "equalto", "in_progress") | list | length }}</h3>
+          </div>
+          <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Фильтры -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+      <form class="flex flex-col md:flex-row gap-4" method="GET" action="{{ request.url.path }}">
+        <div class="flex-1 relative">
+          <input
+            type="text"
+            name="search"
+            value="{{ search or '' }}"
+            placeholder="Поиск по отправителю или содержанию..."
+            class="w-full pl-10 pr-4 py-2 border rounded-lg"
+          />
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <select name="category" class="w-full md:w-[200px] border rounded-lg px-4 py-2">
+          {% for cat in categories %}
+            <option value="{{ cat.value }}" {% if category == cat.value %}selected{% endif %}>{{ cat.label }}</option>
+          {% endfor %}
+        </select>
+        <select name="status" class="w-full md:w-[200px] border rounded-lg px-4 py-2">
+          {% for status in statuses %}
+            <option value="{{ status.value }}" {% if status_filter == status.value %}selected{% endif %}>{{ status.label }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">
+          Фильтровать
+        </button>
+      </form>
+    </div>
+
+    <!-- Панель действий -->
+    {% if selected_ids %}
+      <div class="bg-pink-50 border border-pink-200 p-4 rounded-xl mb-6">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-gray-700">Выбрано: {{ selected_ids|length }}</p>
+          <div class="flex gap-2">
+            {% if user.role == "manager" %}
+              <form action="/manager/messages/mark-read" method="POST">
+                <input type="hidden" name="selected_ids" value="{{ selected_ids|join(',') }}">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                  Пометить как прочитанные
+                </button>
+              </form>
+              <form action="/manager/messages/archive" method="POST">
+                <input type="hidden" name="selected_ids" value="{{ selected_ids|join(',') }}">
+                <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                  Архивировать
+                </button>
+              </form>
+            {% endif %}
+            {% if user.role == "admin" %}
+              <form action="/admin/messages/mark-read" method="POST">
+                <input type="hidden" name="selected_ids" value="{{ selected_ids|join(',') }}">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                  Пометить как прочитанные
+                </button>
+              </form>
+              <form action="/admin/messages/archive" method="POST">
+                <input type="hidden" name="selected_ids" value="{{ selected_ids|join(',') }}">
+                <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                  Архивировать
+                </button>
+              </form>
+              <form action="/admin/messages/delete" method="POST">
+                <input type="hidden" name="selected_ids" value="{{ selected_ids|join(',') }}">
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                  Удалить
+                </button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Список сообщений -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="bg-gray-50 px-6 py-3 border-b border-gray-200 flex items-center gap-4">
+        <input type="checkbox" id="select-all" form="messages-form" />
+        <span class="text-sm text-gray-600">Выбрать все</span>
+      </div>
+      <form id="messages-form" method="POST">
+        <div class="divide-y divide-gray-200">
+          {% for message in filtered_messages %}
+            <div class="{% if message.unread %}bg-blue-50{% else %}hover:bg-gray-50{% endif %} px-6 py-4">
+              <div class="flex items-start gap-4">
+                <input
+                  type="checkbox"
+                  name="message_ids"
+                  value="{{ message.id }}"
+                  {% if message.id in selected_ids %}checked{% endif %}
+                />
+                <button type="button" class="mt-1" formaction="/{{ user.role }}/messages/toggle-star/{{ message.id }}" formmethod="POST">
+                  <svg
+                    class="w-5 h-5 {% if message.starred %}fill-yellow-400 text-yellow-400{% else %}text-gray-300 hover:text-yellow-400{% endif %}"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.95-.69l1.519-4.674z"
+                    />
+                  </svg>
+                </button>
+                <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
+                  {{ message.avatar }}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center gap-2">
+                      <p class="text-sm {% if message.unread %}text-gray-900{% else %}text-gray-700{% endif %}">
+                        {{ message.from }}
+                      </p>
+                      {% if message.status == "new" %}
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      {% elif message.status == "in_progress" %}
+                        <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                      {% elif message.status == "replied" %}
+                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7m0-6l-7 7-2-2" />
+                        </svg>
+                      {% endif %}
+                    </div>
+                    <span class="text-xs text-gray-500">{{ message.time }}</span>
+                  </div>
+                  <p class="text-sm {% if message.unread %}text-gray-900{% else %}text-gray-600{% endif %}">
+                    {{ message.subject }}
+                  </p>
+                  <p class="text-sm text-gray-500 truncate">{{ message.preview }}</p>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <div class="py-20 text-center">
+              <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+              <p class="text-gray-500">Сообщения не найдены</p>
+            </div>
+          {% endfor %}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

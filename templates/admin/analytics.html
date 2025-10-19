@@ -1,0 +1,197 @@
+{% extends "layouts/AdminLayout.html" %}
+
+{% block content %}
+<div class="p-8">
+  <div class="mb-8">
+    <h1 class="text-3xl text-gray-900 mb-2 flex items-center gap-3">
+      <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+      </svg>
+      Аналитика
+    </h1>
+    <p class="text-gray-600">Обзор ключевых показателей салона</p>
+  </div>
+
+  <div class="flex justify-between mb-6">
+    <div class="flex gap-3">
+      <select class="border border-gray-300 rounded-lg p-2 text-sm">
+        <option>За месяц</option>
+        <option>За неделю</option>
+        <option>За день</option>
+      </select>
+      <button class="border border-gray-300 rounded-lg px-4 py-2 text-sm flex items-center gap-2 hover:bg-gray-50">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        Обновить
+      </button>
+      <button class="border border-gray-300 rounded-lg px-4 py-2 text-sm flex items-center gap-2 hover:bg-gray-50">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+        Экспорт
+      </button>
+    </div>
+    <input class="w-64 border border-gray-300 rounded-lg p-2 text-sm" type="search" placeholder="Поиск по услугам...">
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <p class="text-gray-500 text-sm mb-2">Всего записей</p>
+      <h3 class="text-3xl text-gray-900">{{ bookings_trend_data | sum(attribute='записи') }}</h3>
+      <p class="text-green-600 text-sm flex items-center gap-2 mt-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+        </svg>
+        +12% за неделю
+      </p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <p class="text-gray-500 text-sm mb-2">Доход</p>
+      <h3 class="text-3xl text-gray-900">{{ revenue_data | sum(attribute='доход') }} AED</h3>
+      <p class="text-red-600 text-sm flex items-center gap-2 mt-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6"></path>
+        </svg>
+        -5% за неделю
+      </p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <p class="text-gray-500 text-sm mb-2">Средний чек</p>
+      <h3 class="text-3xl text-gray-900">
+        {% set total_bookings = bookings_trend_data | sum(attribute='записи') %}
+        {% set total_revenue = revenue_data | sum(attribute='доход') %}
+        {% if total_bookings > 0 %}
+          {{ (total_revenue / total_bookings) | round(2) }} AED
+        {% else %}
+          0 AED
+        {% endif %}
+      </h3>
+      <p class="text-green-600 text-sm flex items-center gap-2 mt-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+        </svg>
+        +8% за неделю
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <h2 class="text-xl text-gray-900 mb-6">Динамика записей</h2>
+      <canvas id="bookingsTrendChart" height="300"></canvas>
+      <script>
+        const bookingsTrendCtx = document.getElementById('bookingsTrendChart').getContext('2d');
+        new Chart(bookingsTrendCtx, {
+          type: 'line',
+          data: {
+            labels: {{ bookings_trend_data | map(attribute='name') | list | tojson }},
+            datasets: [{
+              label: 'Записи',
+              data: {{ bookings_trend_data | map(attribute='записи') | list | tojson }},
+              borderColor: '#ec4899',
+              backgroundColor: 'rgba(236, 72, 153, 0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      </script>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <h2 class="text-xl text-gray-900 mb-6">Распределение услуг</h2>
+      <canvas id="servicesChart" height="300"></canvas>
+      <script>
+        const servicesCtx = document.getElementById('servicesChart').getContext('2d');
+        new Chart(servicesCtx, {
+          type: 'pie',
+          data: {
+            labels: {{ services_data | map(attribute='name') | list | tojson }},
+            datasets: [{
+              data: {{ services_data | map(attribute='value') | list | tojson }},
+              backgroundColor: {{ services_data | map(attribute='color') | list | tojson }}
+            }]
+          },
+          options: {
+            responsive: true
+          }
+        });
+      </script>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <h2 class="text-xl text-gray-900 mb-6">Статусы записей</h2>
+      <canvas id="statusChart" height="300"></canvas>
+      <script>
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+          type: 'bar',
+          data: {
+            labels: {{ status_data | map(attribute='name') | list | tojson }},
+            datasets: [{
+              label: 'Записи',
+              data: {{ status_data | map(attribute='записи') | list | tojson }},
+              backgroundColor: ['#f59e0b', '#10b981', '#3b82f6', '#ef4444']
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      </script>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
+      <h2 class="text-xl text-gray-900 mb-6">Динамика дохода</h2>
+      <canvas id="revenueChart" height="300"></canvas>
+      <script>
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+          type: 'bar',
+          data: {
+            labels: {{ revenue_data | map(attribute='name') | list | tojson }},
+            datasets: [{
+              label: 'Доход',
+              data: {{ revenue_data | map(attribute='доход') | list | tojson }},
+              backgroundColor: '#10b981'
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      </script>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-xl text-gray-900 mb-6">Топ услуг</h2>
+      <div class="space-y-4">
+        {% for service in top_services %}
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-900">{{ service.name }}</p>
+            <p class="text-xs text-gray-500">{{ service.count }} записей</p>
+          </div>
+          <p class="text-sm text-green-600">{{ service.revenue }} AED</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

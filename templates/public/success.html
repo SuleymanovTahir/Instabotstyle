@@ -1,0 +1,43 @@
+    {% extends "public/PublicLayout.html" %}
+{% block content %}
+<div class="py-20">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-xl p-12 text-center">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+            </div>
+
+            <h1 class="text-4xl text-gray-900 mb-4">
+                Запись подтверждена!
+            </h1>
+
+            <p class="text-xl text-gray-600 mb-6">
+                Спасибо, {{ bookingData.name }}!
+            </p>
+
+            <div class="mb-8 p-6 bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl">
+                <p class="text-lg text-gray-700 mb-2">
+                    Ваша запись на <span class="text-pink-600">{{ bookingData.service }}</span> успешно создана.
+                </p>
+                <p class="text-gray-600">
+                    {{ bookingData.date }} в {{ bookingData.time }}
+                </p>
+            </div>
+
+            <p class="text-gray-600 mb-8">
+                Мы свяжемся с вами в ближайшее время для подтверждения деталей записи.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/" class="inline-flex px-6 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow">Вернуться на главную</a>
+                <a href="/price-list" class="inline-flex px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">Посмотреть услуги</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/button.js"></script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "public/PublicLayout.html" %}
+{% block content %}
+<div>
+    <!-- Header -->
+    <section class="bg-gradient-to-br from-pink-100 via-purple-100 to-pink-50 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <svg class="w-10 h-10 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
+                </svg>
+            </div>
+            <h1 class="text-5xl text-gray-900 mb-4">Часто задаваемые вопросы</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Здесь вы найдете ответы на популярные вопросы о наших услугах
+            </p>
+        </div>
+    </section>
+
+    <!-- Accordion -->
+    <section class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <div class="space-y-4">
+                    {% for faq in faqs %}
+                    <div class="border border-gray-200 rounded-lg px-6">
+                        <button class="w-full text-left py-4 flex justify-between items-center hover:bg-gray-50 transition-colors" onclick="toggleAccordion(this)">
+                            <span class="text-lg text-gray-900">{{ faq.question }}</span>
+                            <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
+                            </svg>
+                        </button>
+                        <div class="text-gray-600 pt-2 pb-4 hidden">
+                            {{ faq.answer }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="py-20 bg-gradient-to-br from-pink-50 to-purple-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl text-gray-900 mb-4">Не нашли ответ на свой вопрос?</h2>
+            <p class="text-lg text-gray-600 mb-8">
+                Свяжитесь с нами, и мы с радостью ответим на все ваши вопросы
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/contacts" class="inline-flex px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full hover:shadow-lg transition-shadow text-lg">Связаться с нами</a>
+                <a href="/" class="inline-flex px-8 py-4 border border-pink-600 text-pink-600 rounded-full hover:bg-pink-50 transition-colors text-lg">Записаться на процедуру</a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/accordion.js"></script>
+<script src="/static/js/button.js"></script>
+{% endblock %}
