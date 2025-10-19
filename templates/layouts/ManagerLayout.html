@@ -60,6 +60,19 @@
         {% block content %}
         {% endblock %}
     </main>
+    <!-- ДОБАВИТЬ перед </body> (после строки 89): -->
+<script src="/static/js/utils.js"></script>
+<script src="/static/js/avatar.js"></script>
+<script src="/static/js/button.js"></script>
+<script src="/static/js/card.js"></script>
+<script src="/static/js/input.js"></script>
+<script src="/static/js/label.js"></script>
+<script src="/static/js/badge.js"></script>
+<script src="/static/js/chart.js"></script>
+<script src="/static/js/table.js"></script>
+{% block scripts %}
+{% endblock %}
+</body>
     {% block scripts %}
     {% endblock %}
 </body>

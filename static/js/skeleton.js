@@ -1,11 +1,17 @@
-import { cn } from "./utils";
-
-function Skeleton({ className, ...props }) {
-  return React.createElement("div", {
-    "data-slot": "skeleton",
-    className: cn("bg-accent animate-pulse rounded-md", className),
-    ...props
-  });
+// static/js/skeleton.js - НОВЫЙ ФАЙЛ
+class CustomSkeleton extends HTMLElement {
+  connectedCallback() {
+    const width = this.getAttribute('width') || '100%';
+    const height = this.getAttribute('height') || '1rem';
+    
+    const div = document.createElement('div');
+    div.className = 'animate-pulse bg-gray-200 rounded';
+    div.style.width = width;
+    div.style.height = height;
+    
+    this.innerHTML = '';
+    this.appendChild(div);
+  }
 }
 
-export { Skeleton };
+customElements.define('custom-skeleton', CustomSkeleton);

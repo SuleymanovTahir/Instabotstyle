@@ -1,42 +1,47 @@
-class Avatar extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('relative', 'flex', 'w-10', 'h-10', 'shrink-0', 'overflow-hidden', 'rounded-full');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+// static/js/avatar.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
+class CustomAvatar extends HTMLElement {
+  connectedCallback() {
+    this.className = 'relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full';
   }
 }
 
 class AvatarImage extends HTMLElement {
-  constructor() {
-    super();
-    const img = document.createElement('img');
-    img.classList.add('aspect-square', 'w-full', 'h-full');
-    if (this.getAttribute('class')) {
-      img.classList.add(...this.getAttribute('class').split(' '));
+  connectedCallback() {
+    const src = this.getAttribute('src');
+    const alt = this.getAttribute('alt') || '';
+    
+    if (src) {
+      const img = document.createElement('img');
+      img.className = 'aspect-square h-full w-full object-cover';
+      img.src = src;
+      img.alt = alt;
+      
+      img.onerror = () => {
+        // Показать fallback при ошибке загрузки
+        img.style.display = 'none';
+        const fallback = this.parentElement.querySelector('avatar-fallback');
+        if (fallback) fallback.style.display = 'flex';
+      };
+      
+      this.innerHTML = '';
+      this.appendChild(img);
     }
-    if (this.getAttribute('src')) {
-      img.src = this.getAttribute('src');
-    }
-    if (this.getAttribute('alt')) {
-      img.alt = this.getAttribute('alt');
-    }
-    this.appendChild(img);
   }
 }
 
 class AvatarFallback extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('bg-gray-200', 'flex', 'w-full', 'h-full', 'items-center', 'justify-center', 'rounded-full');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
-    this.innerHTML = this.innerHTML || 'FB';
+  connectedCallback() {
+    const content = this.innerHTML || '?';
+    
+    const div = document.createElement('div');
+    div.className = 'flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-gray-600 font-medium';
+    div.innerHTML = content;
+    
+    this.innerHTML = '';
+    this.appendChild(div);
   }
 }
 
-customElements.define('custom-avatar', Avatar);
+customElements.define('custom-avatar', CustomAvatar);
 customElements.define('avatar-image', AvatarImage);
 customElements.define('avatar-fallback', AvatarFallback);

@@ -1,73 +1,64 @@
-// Для карусели используем простой vanilla JS слайдер, так как Embla - внешняя библиотека
-
-class Carousel extends HTMLElement {
+// static/js/carousel.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
+class CustomCarousel extends HTMLElement {
   constructor() {
     super();
-    this.orientation = this.getAttribute('orientation') || 'horizontal';
-    this.current = 0;
-    this.childrenArray = Array.from(this.children);
-    this.update();
+    this.currentIndex = 0;
+    this.items = [];
   }
-  update() {
-    this.childrenArray.forEach((child, index) => {
-      child.style.display = index === this.current ? 'block' : 'none';
+  
+  connectedCallback() {
+    this.items = Array.from(this.querySelectorAll('carousel-item'));
+    this.render();
+    this.showSlide(0);
+  }
+  
+  render() {
+    this.className = 'relative overflow-hidden';
+    
+    const controls = `
+      <button class="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-2 hover:bg-white" data-action="prev">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button class="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 p-2 hover:bg-white" data-action="next">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+    `;
+    
+    this.insertAdjacentHTML('beforeend', controls);
+    this.attachEventListeners();
+  }
+  
+  attachEventListeners() {
+    this.querySelector('[data-action="prev"]').addEventListener('click', () => this.prev());
+    this.querySelector('[data-action="next"]').addEventListener('click', () => this.next());
+  }
+  
+  showSlide(index) {
+    this.items.forEach((item, i) => {
+      item.style.display = i === index ? 'block' : 'none';
     });
   }
-  scrollPrev() {
-    this.current = (this.current > 0) ? this.current - 1 : this.childrenArray.length - 1;
-    this.update();
+  
+  prev() {
+    this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
+    this.showSlide(this.currentIndex);
   }
-  scrollNext() {
-    this.current = (this.current < this.childrenArray.length - 1) ? this.current + 1 : 0;
-    this.update();
-  }
-}
-
-class CarouselContent extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('flex', 'overflow-hidden');
+  
+  next() {
+    this.currentIndex = (this.currentIndex + 1) % this.items.length;
+    this.showSlide(this.currentIndex);
   }
 }
 
 class CarouselItem extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('min-w-0', 'shrink-0', 'grow-0', 'basis-full');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+  connectedCallback() {
+    this.className = 'w-full';
   }
 }
 
-class CarouselPrevious extends HTMLElement {
-  constructor() {
-    super();
-    const button = document.createElement('button');
-    button.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>';
-    button.classList.add('absolute', 'size-8', 'rounded-full');
-    button.addEventListener('click', () => {
-      this.closest('carousel').scrollPrev();
-    });
-    this.appendChild(button);
-  }
-}
-
-class CarouselNext extends HTMLElement {
-  constructor() {
-    super();
-    const button = document.createElement('button');
-    button.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>';
-    button.classList.add('absolute', 'size-8', 'rounded-full');
-    button.addEventListener('click', () => {
-      this.closest('carousel').scrollNext();
-    });
-    this.appendChild(button);
-  }
-}
-
-customElements.define('custom-carousel', Carousel);
-customElements.define('carousel-content', CarouselContent);
+customElements.define('custom-carousel', CustomCarousel);
 customElements.define('carousel-item', CarouselItem);
-customElements.define('carousel-previous', CarouselPrevious);
-customElements.define('carousel-next', CarouselNext);

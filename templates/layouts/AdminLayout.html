@@ -126,28 +126,23 @@
         {% block content %}
         {% endblock %}
     </main>
+<!-- ДОБАВИТЬ перед </body> (после строки 84): -->
+<script src="/static/js/utils.js"></script>
 <script src="/static/js/avatar.js"></script>
-  <script src="/static/js/accordion.js"></script>
-  <script src="/static/js/alert-dialog.js"></script>
-  <script src="/static/js/alert.js"></script>
-  <script src="/static/js/aspect-ratio.js"></script>
-  <script src="/static/js/button.js"></script>
-  <script src="/static/js/select.js"></script>
-  <script src="/static/js/input.js"></script>
-  <script src="/static/js/badge.js"></script>
-  <script src="/static/js/textarea.js"></script>
-  <script src="/static/js/card.js"></script>
-  <script src="/static/js/label.js"></script>
-  <script src="/static/js/dialog.js"></script>
-  <script src="/static/js/switch.js"></script>
-  <script src="/static/js/tabs.js"></script>
-  <script src="/static/js/collapsible.js"></script>
-  <script src="/static/js/checkbox.js"></script>
-  <script src="/static/js/chart.js"></script>
-  <script src="/static/js/carousel.js"></script>
-  <script src="/static/js/breadcrumb.js"></script>
-  <script src="/static/js/calendar.js"></script>
-  <script src="/static/js/command.js"></script>
+<script src="/static/js/button.js"></script>
+<script src="/static/js/card.js"></script>
+<script src="/static/js/input.js"></script>
+<script src="/static/js/label.js"></script>
+<script src="/static/js/badge.js"></script>
+<script src="/static/js/calendar.js"></script>
+<script src="/static/js/table.js"></script>
+<!-- ДОБАВИТЬ после всех скриптов (после строки 133): -->
+<script src="/static/js/dialog.js"></script>
+<script src="/static/js/tooltip.js"></script>
+<script src="/static/js/skeleton.js"></script>
+<script src="/static/js/progress.js"></script>
+<script src="/static/js/separator.js"></script>
+{% block scripts %}
+{% endblock %}
 </body>
-
 </html>

@@ -824,7 +824,7 @@ async def manager_clients(request: Request, search: Optional[str] = ""):
             search.lower() in client.email.lower())
     ]
     return templates.TemplateResponse(
-        "manager/clients.html",
+        "admin/clients.html",
         {
             "request": request,
             "clients": filtered_clients,
@@ -836,7 +836,7 @@ async def manager_clients(request: Request, search: Optional[str] = ""):
 @app.get("/manager/analytics")
 async def manager_analytics(request: Request):
     return templates.TemplateResponse(
-        "manager/analytics.html",
+        "admin/analytics.html",
         {
             "request": request,
             "bookings_trend_data": mock_analytics["bookings_trend_data"],

@@ -1,77 +1,51 @@
-class Card extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('bg-card', 'text-card-foreground', 'flex', 'flex-col', 'gap-6', 'rounded-xl', 'border');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+// static/js/card.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
+class CustomCard extends HTMLElement {
+  connectedCallback() {
+    this.classList.add('bg-white', 'text-gray-900', 'flex', 'flex-col', 'gap-6', 'rounded-xl', 'border', 'border-gray-200', 'shadow-sm');
   }
 }
 
 class CardHeader extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('@container/card-header', 'grid', 'auto-rows-min', 'grid-rows-[auto_auto]', 'items-start', 'gap-1.5', 'px-6', 'pt-6', 'has-data-[slot=card-action]:grid-cols-[1fr_auto]', '[.border-b]:pb-6');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+  connectedCallback() {
+    this.classList.add('grid', 'auto-rows-min', 'items-start', 'gap-1.5', 'px-6', 'pt-6');
   }
 }
 
 class CardTitle extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('leading-none');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+  connectedCallback() {
+    const h3 = document.createElement('h3');
+    h3.className = 'text-2xl font-semibold leading-none tracking-tight';
+    h3.innerHTML = this.innerHTML;
+    this.innerHTML = '';
+    this.appendChild(h3);
   }
 }
 
 class CardDescription extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('text-muted-foreground');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
-  }
-}
-
-class CardAction extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('col-start-2', 'row-span-2', 'row-start-1', 'self-start', 'justify-self-end');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+  connectedCallback() {
+    const p = document.createElement('p');
+    p.className = 'text-sm text-gray-500';
+    p.innerHTML = this.innerHTML;
+    this.innerHTML = '';
+    this.appendChild(p);
   }
 }
 
 class CardContent extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('px-6', '[&:last-child]:pb-6');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+  connectedCallback() {
+    this.classList.add('px-6', 'pb-6');
   }
 }
 
 class CardFooter extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('flex', 'items-center', 'px-6', 'pb-6', '[.border-t]:pt-6');
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+  connectedCallback() {
+    this.classList.add('flex', 'items-center', 'px-6', 'pb-6', 'border-t', 'pt-6');
   }
 }
 
-customElements.define('custom-card', Card);
+customElements.define('custom-card', CustomCard);
 customElements.define('card-header', CardHeader);
 customElements.define('card-title', CardTitle);
 customElements.define('card-description', CardDescription);
-customElements.define('card-action', CardAction);
 customElements.define('card-content', CardContent);
 customElements.define('card-footer', CardFooter);

@@ -1,19 +1,20 @@
+// static/js/aspect-ratio.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
 class AspectRatio extends HTMLElement {
-  constructor() {
-    super();
+  connectedCallback() {
+    const ratio = this.getAttribute('ratio') || '16/9';
+    const [width, height] = ratio.split('/').map(Number);
+    const paddingBottom = (height / width * 100).toFixed(2);
+    
     this.style.position = 'relative';
     this.style.width = '100%';
-    const ratio = this.getAttribute('ratio') || '1';
-    this.style.paddingBottom = `${100 / parseFloat(ratio)}%`;
-    const inner = document.createElement('div');
-    inner.style.position = 'absolute';
-    inner.style.top = '0';
-    inner.style.left = '0';
-    inner.style.width = '100%';
-    inner.style.height = '100%';
-    inner.innerHTML = this.innerHTML;
-    this.innerHTML = '';
-    this.appendChild(inner);
+    this.style.paddingBottom = `${paddingBottom}%`;
+    
+    const content = this.innerHTML;
+    this.innerHTML = `
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+        ${content}
+      </div>
+    `;
   }
 }
 

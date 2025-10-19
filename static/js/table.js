@@ -1,95 +1,72 @@
-import * as React from "react";
-
-import { cn } from "./utils";
-
-function Table({ className, ...props }) {
-  return React.createElement("div", {
-    "data-slot": "table-container",
-    className: "relative w-full overflow-x-auto"
-  },
-    React.createElement("table", {
-      "data-slot": "table",
-      className: cn("w-full caption-bottom text-sm", className),
-      ...props
-    })
-  );
+// static/js/table.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
+class CustomTable extends HTMLElement {
+  connectedCallback() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'relative w-full overflow-x-auto';
+    
+    const table = document.createElement('table');
+    table.className = 'w-full caption-bottom text-sm';
+    table.innerHTML = this.innerHTML;
+    
+    wrapper.appendChild(table);
+    this.innerHTML = '';
+    this.appendChild(wrapper);
+  }
 }
 
-function TableHeader({ className, ...props }) {
-  return React.createElement("thead", {
-    "data-slot": "table-header",
-    className: cn("[&_tr]:border-b", className),
-    ...props
-  });
+class TableHeader extends HTMLElement {
+  connectedCallback() {
+    const thead = document.createElement('thead');
+    thead.className = 'border-b';
+    thead.innerHTML = this.innerHTML;
+    this.innerHTML = '';
+    this.appendChild(thead);
+  }
 }
 
-function TableBody({ className, ...props }) {
-  return React.createElement("tbody", {
-    "data-slot": "table-body",
-    className: cn("[&_tr:last-child]:border-0", className),
-    ...props
-  });
+class TableBody extends HTMLElement {
+  connectedCallback() {
+    const tbody = document.createElement('tbody');
+    tbody.className = '[&_tr:last-child]:border-0';
+    tbody.innerHTML = this.innerHTML;
+    this.innerHTML = '';
+    this.appendChild(tbody);
+  }
 }
 
-function TableFooter({ className, ...props }) {
-  return React.createElement("tfoot", {
-    "data-slot": "table-footer",
-    className: cn(
-      "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
-      className
-    ),
-    ...props
-  });
+class TableRow extends HTMLElement {
+  connectedCallback() {
+    const tr = document.createElement('tr');
+    tr.className = 'border-b transition-colors hover:bg-gray-50';
+    tr.innerHTML = this.innerHTML;
+    this.innerHTML = '';
+    this.appendChild(tr);
+  }
 }
 
-function TableRow({ className, ...props }) {
-  return React.createElement("tr", {
-    "data-slot": "table-row",
-    className: cn(
-      "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
-      className
-    ),
-    ...props
-  });
+class TableHead extends HTMLElement {
+  connectedCallback() {
+    const th = document.createElement('th');
+    th.className = 'h-10 px-2 text-left align-middle font-medium text-gray-900';
+    th.innerHTML = this.innerHTML;
+    this.innerHTML = '';
+    this.appendChild(th);
+  }
 }
 
-function TableHead({ className, ...props }) {
-  return React.createElement("th", {
-    "data-slot": "table-head",
-    className: cn(
-      "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className
-    ),
-    ...props
-  });
+class TableCell extends HTMLElement {
+  connectedCallback() {
+    const td = document.createElement('td');
+    td.className = 'p-2 align-middle';
+    td.innerHTML = this.innerHTML;
+    this.innerHTML = '';
+    this.appendChild(td);
+  }
 }
 
-function TableCell({ className, ...props }) {
-  return React.createElement("td", {
-    "data-slot": "table-cell",
-    className: cn(
-      "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-      className
-    ),
-    ...props
-  });
-}
-
-function TableCaption({ className, ...props }) {
-  return React.createElement("caption", {
-    "data-slot": "table-caption",
-    className: cn("text-muted-foreground mt-4 text-sm", className),
-    ...props
-  });
-}
-
-export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption
-};
+customElements.define('custom-table', CustomTable);
+customElements.define('table-header', TableHeader);
+customElements.define('table-body', TableBody);
+customElements.define('table-row', TableRow);
+customElements.define('table-head', TableHead);
+customElements.define('table-cell', TableCell);

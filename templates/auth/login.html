@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +9,26 @@
     <link rel="stylesheet" href="/static/css/index.css">
     <link rel="stylesheet" href="/static/css/globals.css">
 </head>
+
 <body class="bg-gray-50 min-h-screen flex items-center justify-center">
     <div class="bg-white p-8 rounded-lg shadow-sm w-full max-w-md">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Вход в систему</h2>
         <form method="POST" action="/login">
             <div class="mb-4">
                 <label class="block text-sm text-gray-500 mb-2" for="username">Имя пользователя</label>
-                <input type="text" id="username" name="username" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600" required>
+                <input type="text" id="username" name="username"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600"
+                    required>
             </div>
             <div class="mb-6">
                 <label class="block text-sm text-gray-500 mb-2" for="password">Пароль</label>
-                <input type="password" id="password" name="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600" required>
+                <input type="password" id="password" name="password"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600"
+                    required>
             </div>
-            <button type="submit" class="w-full px-6 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow">
+            <custom-button type="submit" variant="default" size="lg" class="w-full">
                 Войти
-            </button>
+            </custom-button>
         </form>
         <p class="text-sm text-gray-500 mt-4 text-center">
             Нет аккаунта? <a href="/register" class="text-pink-600 hover:underline">Зарегистрируйтесь</a>
@@ -31,4 +37,5 @@
     <script src="/static/js/input.js"></script>
     <script src="/static/js/button.js"></script>
 </body>
+
 </html>

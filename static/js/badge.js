@@ -1,26 +1,31 @@
-class Badge extends HTMLElement {
-  constructor() {
-    super();
-    this.classList.add('inline-flex', 'items-center', 'justify-center', 'rounded-md', 'border', 'px-2', 'py-0.5', 'text-xs', 'font-medium', 'w-fit', 'whitespace-nowrap', 'shrink-0', '[&>svg]:size-3', 'gap-1', '[&>svg]:pointer-events-none', 'focus-visible:border-ring', 'focus-visible:ring-ring/50', 'focus-visible:ring-[3px]', 'aria-invalid:ring-destructive/20', 'dark:aria-invalid:ring-destructive/40', 'aria-invalid:border-destructive', 'transition-[color,box-shadow]', 'overflow-hidden');
+// static/js/badge.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
+class CustomBadge extends HTMLElement {
+  connectedCallback() {
     const variant = this.getAttribute('variant') || 'default';
-    switch (variant) {
-      case 'default':
-        this.classList.add('border-transparent', 'bg-primary', 'text-primary-foreground', '[a&]:hover:bg-primary/90');
-        break;
-      case 'secondary':
-        this.classList.add('border-transparent', 'bg-secondary', 'text-secondary-foreground', '[a&]:hover:bg-secondary/90');
-        break;
-      case 'destructive':
-        this.classList.add('border-transparent', 'bg-destructive', 'text-white', '[a&]:hover:bg-destructive/90', 'focus-visible:ring-destructive/20', 'dark:focus-visible:ring-destructive/40', 'dark:bg-destructive/60');
-        break;
-      case 'outline':
-        this.classList.add('text-foreground', '[a&]:hover:bg-accent', '[a&]:hover:text-accent-foreground');
-        break;
-    }
-    if (this.getAttribute('class')) {
-      this.classList.add(...this.getAttribute('class').split(' '));
-    }
+    const content = this.innerHTML;
+    
+    const span = document.createElement('span');
+    span.className = this.getBadgeClasses(variant);
+    span.innerHTML = content;
+    
+    this.innerHTML = '';
+    this.appendChild(span);
+  }
+  
+  getBadgeClasses(variant) {
+    const base = 'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+    
+    const variants = {
+      default: 'bg-pink-600 text-white hover:bg-pink-700',
+      secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+      destructive: 'bg-red-600 text-white hover:bg-red-700',
+      outline: 'border border-gray-300 text-gray-900 hover:bg-gray-50',
+      success: 'bg-green-600 text-white hover:bg-green-700',
+      warning: 'bg-yellow-600 text-white hover:bg-yellow-700'
+    };
+    
+    return `${base} ${variants[variant] || variants.default}`;
   }
 }
 
-customElements.define('custom-badge', Badge);
+customElements.define('custom-badge', CustomBadge);

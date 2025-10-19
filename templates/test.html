@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/animations.css">
+</head>
+<body class="p-8 space-y-8">
+    <h1 class="text-3xl font-bold mb-8">Component Tests</h1>
+    
+    <!-- Button Test -->
+    <section>
+        <h2 class="text-2xl font-bold mb-4">Buttons</h2>
+        <div class="flex gap-4">
+            <custom-button variant="default">Default</custom-button>
+            <custom-button variant="outline">Outline</custom-button>
+            <custom-button variant="ghost">Ghost</custom-button>
+            <custom-button variant="destructive">Destructive</custom-button>
+        </div>
+    </section>
+    
+    <!-- Input Test -->
+    <section>
+        <h2 class="text-2xl font-bold mb-4">Input</h2>
+        <div class="max-w-sm space-y-4">
+            <div>
+                <custom-label for="test-input">Email</custom-label>
+                <custom-input id="test-input" type="email" placeholder="test@example.com"></custom-input>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Card Test -->
+    <section>
+        <h2 class="text-2xl font-bold mb-4">Card</h2>
+        <custom-card class="max-w-sm">
+            <card-header>
+                <card-title>Card Title</card-title>
+                <card-description>Card description goes here</card-description>
+            </card-header>
+            <card-content>
+                <p>This is the card content.</p>
+            </card-content>
+            <card-footer>
+                <custom-button>Action</custom-button>
+            </card-footer>
+        </custom-card>
+    </section>
+    
+    <!-- Badge Test -->
+    <section>
+        <h2 class="text-2xl font-bold mb-4">Badges</h2>
+        <div class="flex gap-2">
+            <custom-badge variant="default">Default</custom-badge>
+            <custom-badge variant="secondary">Secondary</custom-badge>
+            <custom-badge variant="destructive">Destructive</custom-badge>
+            <custom-badge variant="outline">Outline</custom-badge>
+        </div>
+    </section>
+    
+    <!-- Alert Test -->
+    <section>
+        <h2 class="text-2xl font-bold mb-4">Alerts</h2>
+        <custom-alert variant="default" class="mb-4">
+            <alert-title>Info</alert-title>
+            <alert-description>This is an informational alert.</alert-description>
+        </custom-alert>
+        <custom-alert variant="destructive">
+            <alert-title>Error</alert-title>
+            <alert-description>This is an error alert.</alert-description>
+        </custom-alert>
+    </section>
+    
+    <!-- Dialog Test -->
+    <section>
+        <h2 class="text-2xl font-bold mb-4">Dialog</h2>
+        <dialog-trigger dialog="test-dialog">
+            <custom-button>Open Dialog</custom-button>
+        </dialog-trigger>
+        
+        <custom-dialog id="test-dialog">
+            <dialog-content>
+                <dialog-header>
+                    <dialog-title>Dialog Title</dialog-title>
+                    <dialog-description>This is a dialog description.</dialog-description>
+                </dialog-header>
+                <div class="p-6">
+                    <p>Dialog content goes here.</p>
+                </div>
+                <dialog-footer>
+                    <custom-button variant="outline" onclick="document.getElementById('test-dialog').close()">Cancel</custom-button>
+                    <custom-button onclick="document.getElementById('test-dialog').close()">Confirm</custom-button>
+                </dialog-footer>
+            </dialog-content>
+        </custom-dialog>
+    </section>
+    
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/button.js"></script>
+    <script src="/static/js/input.js"></script>
+    <script src="/static/js/label.js"></script>
+    <script src="/static/js/card.js"></script>
+    <script src="/static/js/badge.js"></script>
+    <script src="/static/js/alert.js"></script>
+    <script src="/static/js/dialog.js"></script>
+</body>
+</html>

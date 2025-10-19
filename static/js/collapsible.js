@@ -1,32 +1,38 @@
+// static/js/collapsible.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
 class Collapsible extends HTMLElement {
   constructor() {
     super();
-    this.open = this.getAttribute('open') !== null;
+    this.isOpen = this.hasAttribute('open');
+  }
+  
+  connectedCallback() {
+    const content = this.querySelector('collapsible-content');
+    if (content && !this.isOpen) {
+      content.style.display = 'none';
+    }
+  }
+  
+  toggle() {
+    this.isOpen = !this.isOpen;
+    const content = this.querySelector('collapsible-content');
+    if (content) {
+      content.style.display = this.isOpen ? 'block' : 'none';
+    }
   }
 }
 
 class CollapsibleTrigger extends HTMLElement {
-  constructor() {
-    super();
-    const button = document.createElement('button');
-    button.innerHTML = this.innerHTML;
-    button.addEventListener('click', () => {
-      const root = this.closest('collapsible');
-      const content = this.nextElementSibling;
-      root.open = !root.open;
-      content.style.display = root.open ? 'block' : 'none';
+  connectedCallback() {
+    this.style.cursor = 'pointer';
+    this.addEventListener('click', () => {
+      const collapsible = this.closest('collapsible');
+      if (collapsible) collapsible.toggle();
     });
-    this.innerHTML = '';
-    this.appendChild(button);
   }
 }
 
 class CollapsibleContent extends HTMLElement {
-  constructor() {
-    super();
-    const root = this.closest('collapsible');
-    this.style.display = root.open ? 'block' : 'none';
-  }
+  // Контент управляется родителем
 }
 
 customElements.define('collapsible', Collapsible);

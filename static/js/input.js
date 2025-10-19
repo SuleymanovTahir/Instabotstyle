@@ -1,19 +1,33 @@
-import * as React from "react";
-
-import { cn } from "./utils";
-
-function Input({ className, type, ...props }) {
-  return React.createElement("input", {
-    type,
-    "data-slot": "input",
-    className: cn(
-      "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base bg-input-background transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-      "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-      "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-      className
-    ),
-    ...props
-  });
+// static/js/input.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
+class CustomInput extends HTMLElement {
+  connectedCallback() {
+    const type = this.getAttribute('type') || 'text';
+    const placeholder = this.getAttribute('placeholder') || '';
+    const value = this.getAttribute('value') || '';
+    const name = this.getAttribute('name') || '';
+    const id = this.getAttribute('id') || '';
+    const required = this.hasAttribute('required');
+    
+    const input = document.createElement('input');
+    input.type = type;
+    input.placeholder = placeholder;
+    input.value = value;
+    if (name) input.name = name;
+    if (id) input.id = id;
+    if (required) input.required = true;
+    
+    input.className = 'flex h-9 w-full rounded-md border border-gray-300 bg-white px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pink-600 disabled:cursor-not-allowed disabled:opacity-50';
+    
+    // Копируем дополнительные атрибуты
+    Array.from(this.attributes).forEach(attr => {
+      if (!['type', 'placeholder', 'value', 'name', 'id', 'required', 'class'].includes(attr.name)) {
+        input.setAttribute(attr.name, attr.value);
+      }
+    });
+    
+    this.innerHTML = '';
+    this.appendChild(input);
+  }
 }
 
-export { Input };
+customElements.define('custom-input', CustomInput);

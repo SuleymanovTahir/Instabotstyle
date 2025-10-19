@@ -1,23 +1,32 @@
-import * as React from "react";
-import * as ProgressPrimitive from "@radix-ui/react-progress@1.1.2";
-
-import { cn } from "./utils";
-
-function Progress({ className, value, ...props }) {
-  return React.createElement(ProgressPrimitive.Root, {
-    "data-slot": "progress",
-    className: cn(
-      "bg-primary/20 relative h-2 w-full overflow-hidden rounded-full",
-      className
-    ),
-    ...props
-  },
-    React.createElement(ProgressPrimitive.Indicator, {
-      "data-slot": "progress-indicator",
-      className: "bg-primary h-full w-full flex-1 transition-all",
-      style: { transform: `translateX(-${100 - (value || 0)}%)` }
-    })
-  );
+// static/js/progress.js - НОВЫЙ ФАЙЛ
+class CustomProgress extends HTMLElement {
+  connectedCallback() {
+    const value = parseFloat(this.getAttribute('value')) || 0;
+    const max = parseFloat(this.getAttribute('max')) || 100;
+    const percentage = (value / max) * 100;
+    
+    const container = document.createElement('div');
+    container.className = 'relative h-2 w-full overflow-hidden rounded-full bg-gray-200';
+    
+    const bar = document.createElement('div');
+    bar.className = 'h-full bg-pink-600 transition-all';
+    bar.style.width = `${percentage}%`;
+    
+    container.appendChild(bar);
+    this.innerHTML = '';
+    this.appendChild(container);
+  }
+  
+  // Метод для обновления значения
+  setValue(value) {
+    this.setAttribute('value', value);
+    const max = parseFloat(this.getAttribute('max')) || 100;
+    const percentage = (value / max) * 100;
+    const bar = this.querySelector('div > div');
+    if (bar) {
+      bar.style.width = `${percentage}%`;
+    }
+  }
 }
 
-export { Progress };
+customElements.define('custom-progress', CustomProgress);

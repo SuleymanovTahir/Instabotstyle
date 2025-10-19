@@ -1,40 +1,73 @@
-import * as React from "react";
-import * as TooltipPrimitive from "@radix-ui/react-tooltip@1.1.8";
-
-import { cn } from "./utils";
-
-function TooltipProvider({ delayDuration = 0, ...props }) {
-  return React.createElement(TooltipPrimitive.Provider, {
-    "data-slot": "tooltip-provider",
-    delayDuration,
-    ...props
-  });
+// static/js/tooltip.js - НОВЫЙ ФАЙЛ
+class CustomTooltip extends HTMLElement {
+  connectedCallback() {
+    const trigger = this.querySelector('tooltip-trigger');
+    const content = this.querySelector('tooltip-content');
+    
+    if (!trigger || !content) return;
+    
+    // Скрыть tooltip по умолчанию
+    content.style.display = 'none';
+    content.style.position = 'absolute';
+    content.style.zIndex = '50';
+    
+    let timeout;
+    
+    trigger.addEventListener('mouseenter', () => {
+      timeout = setTimeout(() => {
+        this.showTooltip(trigger, content);
+      }, 300);
+    });
+    
+    trigger.addEventListener('mouseleave', () => {
+      clearTimeout(timeout);
+      content.style.display = 'none';
+    });
+  }
+  
+  showTooltip(trigger, content) {
+    const rect = trigger.getBoundingClientRect();
+    const side = this.getAttribute('side') || 'top';
+    
+    content.style.display = 'block';
+    
+    switch(side) {
+      case 'top':
+        content.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+        content.style.left = `${rect.left + rect.width / 2}px`;
+        content.style.transform = 'translateX(-50%)';
+        break;
+      case 'bottom':
+        content.style.top = `${rect.bottom + 8}px`;
+        content.style.left = `${rect.left + rect.width / 2}px`;
+        content.style.transform = 'translateX(-50%)';
+        break;
+      case 'left':
+        content.style.top = `${rect.top + rect.height / 2}px`;
+        content.style.right = `${window.innerWidth - rect.left + 8}px`;
+        content.style.transform = 'translateY(-50%)';
+        break;
+      case 'right':
+        content.style.top = `${rect.top + rect.height / 2}px`;
+        content.style.left = `${rect.right + 8}px`;
+        content.style.transform = 'translateY(-50%)';
+        break;
+    }
+  }
 }
 
-function Tooltip(props) {
-  return React.createElement(TooltipProvider, null,
-    React.createElement(TooltipPrimitive.Root, { "data-slot": "tooltip", ...props })
-  );
+class TooltipTrigger extends HTMLElement {
+  connectedCallback() {
+    this.style.cursor = 'pointer';
+  }
 }
 
-function TooltipTrigger(props) {
-  return React.createElement(TooltipPrimitive.Trigger, { "data-slot": "tooltip-trigger", ...props });
+class TooltipContent extends HTMLElement {
+  connectedCallback() {
+    this.className = 'z-50 overflow-hidden rounded-md bg-gray-900 px-3 py-1.5 text-xs text-white animate-in fade-in-0 zoom-in-95';
+  }
 }
 
-function TooltipContent({ className, sideOffset = 0, children, ...props }) {
-  return React.createElement(TooltipPrimitive.Portal, null,
-    React.createElement(TooltipPrimitive.Content, {
-      "data-slot": "tooltip-content",
-      sideOffset,
-      className: cn(
-        "bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
-        className
-      ),
-      ...props
-    }, children,
-      React.createElement(TooltipPrimitive.Arrow, { className: "bg-primary fill-primary z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" })
-    )
-  );
-}
-
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+customElements.define('custom-tooltip', CustomTooltip);
+customElements.define('tooltip-trigger', TooltipTrigger);
+customElements.define('tooltip-content', TooltipContent);

@@ -1,19 +1,19 @@
-import * as React from "react";
-import * as SeparatorPrimitive from "@radix-ui/react-separator@1.1.2";
-
-import { cn } from "./utils";
-
-function Separator({ className, orientation = "horizontal", decorative = true, ...props }) {
-  return React.createElement(SeparatorPrimitive.Root, {
-    "data-slot": "separator-root",
-    decorative,
-    orientation,
-    className: cn(
-      "bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
-      className
-    ),
-    ...props
-  });
+// static/js/separator.js - НОВЫЙ ФАЙЛ
+class CustomSeparator extends HTMLElement {
+  connectedCallback() {
+    const orientation = this.getAttribute('orientation') || 'horizontal';
+    
+    const hr = document.createElement('hr');
+    
+    if (orientation === 'horizontal') {
+      hr.className = 'h-px w-full bg-gray-200 border-0';
+    } else {
+      hr.className = 'w-px h-full bg-gray-200 border-0';
+    }
+    
+    this.innerHTML = '';
+    this.appendChild(hr);
+  }
 }
 
-export { Separator };
+customElements.define('custom-separator', CustomSeparator);

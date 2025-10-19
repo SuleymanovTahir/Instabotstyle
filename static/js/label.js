@@ -1,17 +1,17 @@
-import * as React from "react";
-import * as LabelPrimitive from "@radix-ui/react-label@2.1.2";
-
-import { cn } from "./utils";
-
-function Label({ className, ...props }) {
-  return React.createElement(LabelPrimitive.Root, {
-    "data-slot": "label",
-    className: cn(
-      "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-      className
-    ),
-    ...props
-  });
+// static/js/label.js - ПОЛНОСТЬЮ ЗАМЕНИТЬ
+class CustomLabel extends HTMLElement {
+  connectedCallback() {
+    const htmlFor = this.getAttribute('for') || '';
+    const content = this.innerHTML;
+    
+    const label = document.createElement('label');
+    if (htmlFor) label.setAttribute('for', htmlFor);
+    label.className = 'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70';
+    label.innerHTML = content;
+    
+    this.innerHTML = '';
+    this.appendChild(label);
+  }
 }
 
-export { Label };
+customElements.define('custom-label', CustomLabel);
